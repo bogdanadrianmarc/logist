@@ -13,11 +13,11 @@ module Logist
         msg = normalize_message(raw_msg)
         payload = { level: severity, timestamp: format_datetime(timestamp), environment: ::Rails.env }
 
-        if msg.is_a?(String) && msg.match(/Status [0-9]+/)
-          status = msg.split(' ')[1]
-          payload.merge!(status: status)
-        elsif flat_json && msg.is_a?(Hash)
+        if flat_json && msg.is_a?(Hash)
           payload.merge!(msg)
+        elsif msg.is_a?(String) && msg.match(/Status [0-9]+/)
+          status = msg.split(' ')[1]
+          payload.merge!(message: { status: status })
         else
           payload.merge!(message: msg)
         end
