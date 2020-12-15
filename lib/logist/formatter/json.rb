@@ -10,11 +10,11 @@ module Logist
       attr_accessor :flat_json
 
       def call(severity, timestamp, _progname, raw_msg)
+        sev = severity.is_a?(String) && severity.match('FATAL') ? 'ERROR' : severity
+        tstamp = format_datetime(timestamp).strip
         msg = normalize_message(raw_msg)
 
-        sev = severity.is_a?(String) && severity.match('FATAL') ? 'ERROR' : severity
-
-        payload = { level: sev, timestamp: format_datetime(timestamp), environment: ::Rails.env }
+        payload = { level: sev, timestamp: tstamp, environment: ::Rails.env }
 
         if flat_json && msg.is_a?(Hash)
           payload.merge!(msg)
