@@ -54,8 +54,8 @@ module Logist
           { message: { method: method, path: path } }
         elsif msg.is_a?(String) && msg.split(' ')[0].match('User-Agent:') && msg.split("\n")[1].split(' ')[0].match('Accept:')
           splitted_msg = msg.split("\n")
-          user_agent = splitted_msg[0].split(' ')[1]
-          accept = splitted_msg[1].split(' ')[1]
+          user_agent = splitted_msg[0].split('"')[1]
+          accept = splitted_msg[1].split('"')[1]
           { message: { user_agent: user_agent, accept: accept } }
         else
           { message: msg }
