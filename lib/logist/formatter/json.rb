@@ -47,6 +47,11 @@ module Logist
         elsif msg.is_a?(String) && msg.match(/Status [0-9]+/)
           status = msg.split(' ')[1]
           { message: { status: status } }
+        elsif msg.is_a?(String) && msg.split(' ').length == 2 && msg.split(' ')[0].match('GET')
+          splitted_msg = msg.split(' ')
+          method = splitted_msg[0]
+          path = splitted_msg[1]
+          { message: { method: method, path: path } }
         else
           { message: msg }
         end
