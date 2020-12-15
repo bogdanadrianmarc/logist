@@ -11,7 +11,12 @@ module Logist
 
       def call(severity, timestamp, _progname, raw_msg)
         msg = normalize_message(raw_msg)
-        payload = { level: severity, timestamp: format_datetime(timestamp), environment: ::Rails.env }
+
+        sev = severity
+        if severity.is_a?(String) && severity.match('FATAL')
+          sev = 'ERROR'
+
+        payload = { level: sev, timestamp: format_datetime(timestamp), environment: ::Rails.env }
 
         if flat_json && msg.is_a?(Hash)
           payload.merge!(msg)
