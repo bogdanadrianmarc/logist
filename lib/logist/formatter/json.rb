@@ -12,9 +12,7 @@ module Logist
       def call(severity, timestamp, _progname, raw_msg)
         msg = normalize_message(raw_msg)
 
-        sev = severity
-        if severity.is_a?(String) && severity.match('FATAL')
-          sev = 'ERROR'
+        sev = severity.is_a?(String) && severity.match('FATAL') ? 'ERROR' : severity
 
         payload = { level: sev, timestamp: format_datetime(timestamp), environment: ::Rails.env }
 
